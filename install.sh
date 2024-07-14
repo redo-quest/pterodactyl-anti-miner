@@ -40,4 +40,4 @@ while true; do
 done
 EOF
 
-chmod +x /home/container/scan_and_suspend_miners.sh
+chmod +x /home/container/run.sh

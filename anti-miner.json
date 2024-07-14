@@ -1,0 +1,50 @@
+{
+  "_comment": "Anti-Miner Egg for the Pterodactyl Panel.",
+  "name": "Anti Miner Egg",
+  "author": "redo",
+  "description": "Anti-Miner Egg for the Pterodactyl Panel.",
+  "image": "quay.io/pterodactyl/core:debian",
+  "startup": "./startup.sh",
+  "config": {
+    "files": "{}",
+    "startup": "{}",
+    "stop": "exit",
+    "logs": "logs/latest.log"
+  },
+  "scripts": {
+    "installation": {
+      "script": "install.sh",
+      "container": "debian:buster-slim",
+      "entrypoint": "bash"
+    }
+  },
+  "variables": [
+    {
+      "name": "PANEL_URL",
+      "description": "The URL of your Pterodactyl panel",
+      "env_variable": "PANEL_URL",
+      "default_value": "https://your_panel_url_here",
+      "user_viewable": true,
+      "user_editable": true,
+      "required": true
+    },
+    {
+      "name": "PTERODACTYL_API_KEY",
+      "description": "Your Pterodactyl API key",
+      "env_variable": "PTERODACTYL_API_KEY",
+      "default_value": "your_api_key_here",
+      "user_viewable": true,
+      "user_editable": true,
+      "required": true
+    },
+    {
+      "name": "SCAN_INTERVAL",
+      "description": "Interval between scans in seconds",
+      "env_variable": "SCAN_INTERVAL",
+      "default_value": "3600",
+      "user_viewable": true,
+      "user_editable": true,
+      "required": false
+    }
+  ]
+}

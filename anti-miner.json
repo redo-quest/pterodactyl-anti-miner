@@ -4,7 +4,7 @@
   "author": "redo",
   "description": "Anti-Miner Egg for the Pterodactyl Panel.",
   "image": "quay.io/pterodactyl/core:debian",
-  "startup": "./startup.sh",
+  "startup": "./run.sh",
   "config": {
     "files": "{}",
     "startup": "{}",
@@ -13,7 +13,7 @@
   },
   "scripts": {
     "installation": {
-      "script": "install.sh",
+      "script": "https://raw.githubusercontent.com/redo-quest/pterodactyl-anti-miner/main/install.sh",
       "container": "debian:buster-slim",
       "entrypoint": "bash"
     }

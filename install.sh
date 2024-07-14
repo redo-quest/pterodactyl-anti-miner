@@ -3,15 +3,18 @@
 apt-get update
 apt-get install -y jq curl
 
-
+# Create the script
 cat << 'EOF' > /home/container/run.sh
 #!/bin/bash
 
 PTERODACTYL_API_KEY="$PTERODACTYL_API_KEY"
 PANEL_URL="$PANEL_URL"
 SCAN_INTERVAL="$SCAN_INTERVAL"
+MINING_KEYWORDS="$MINING_KEYWORDS"
 
-scan_and_suspend_miners() {
+IFS=',' read -r -a keywords_array <<< "$MINING_KEYWORDS"
+
+run() {
     servers=$(curl -s -X GET "$PANEL_URL/api/application/servers" \
               -H "Authorization: Bearer $PTERODACTYL_API_KEY" \
               -H "Content-Type: application/json")
@@ -21,23 +24,26 @@ scan_and_suspend_miners() {
                          -H "Authorization: Bearer $PTERODACTYL_API_KEY" \
                          -H "Content-Type: application/json")
 
-        if [[ $(echo "$server_details" | grep -i "mining_keyword") ]]; then
-            echo "Miner detected on server ID: $server_id. Suspending..."
-            curl -s -X POST "$PANEL_URL/api/application/servers/$server_id/suspend" \
-                 -H "Authorization: Bearer $PTERODACTYL_API_KEY" \
-                 -H "Content-Type: application/json"
-            echo "Server $server_id suspended."
-        else
-            echo "No mining activity detected on server ID: $server_id."
-        fi
+        for keyword in "${keywords_array[@]}"; do
+            if [[ $(echo "$server_details" | grep -i "$keyword") ]]; then
+                echo "Miner detected on server ID: $server_id with keyword: $keyword. Suspending..."
+                curl -s -X POST "$PANEL_URL/api/application/servers/$server_id/suspend" \
+                     -H "Authorization: Bearer $PTERODACTYL_API_KEY" \
+                     -H "Content-Type: application/json"
+                echo "Server $server_id suspended."
+                break
+            else
+                echo "No mining activity detected on server ID: $server_id for keyword: $keyword."
+            fi
+        done
     done
 }
 
 while true; do
-    scan_and_suspend_miners
+    run
     echo "Sleeping for $SCAN_INTERVAL seconds..."
     sleep $SCAN_INTERVAL
 done
 EOF
 
-chmod +x /home/container/run.sh
+chmod +x /home/container/install.sh

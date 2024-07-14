@@ -45,6 +45,15 @@
       "user_viewable": true,
       "user_editable": true,
       "required": false
+    },
+    {
+      "name": "MINING_KEYWORDS",
+      "description": "Comma-separated keywords to detect mining activity",
+      "env_variable": "MINING_KEYWORDS",
+      "default_value": "mining_keyword1,mining_keyword2",
+      "user_viewable": true,
+      "user_editable": true,
+      "required": true
     }
   ]
 }

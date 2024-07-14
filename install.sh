@@ -4,7 +4,7 @@ apt-get update
 apt-get install -y jq curl
 
 
-cat << 'EOF' > /home/container/scan_and_suspend_miners.sh
+cat << 'EOF' > /home/container/run.sh
 #!/bin/bash
 
 PTERODACTYL_API_KEY="$PTERODACTYL_API_KEY"
